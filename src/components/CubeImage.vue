@@ -58,8 +58,8 @@ export default { name: "CubeImage", computed, methods, props };
 
 <style scoped>
 .cube-img {
-	width: 20%;
-	height: 20%;
+	width: 500px;
+	max-width: 100%;
 }
 .preload {
 	display: none;

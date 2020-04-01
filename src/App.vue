@@ -11,6 +11,7 @@
 				</select>
 			</label>
 			<CubeImage :cur-alg="curAlg" :next-alg="nextAlg" />
+			<Timer :hint="curAlg" :hintDelayMs="2000" @stop="handleStop"></Timer>
 			<button autofocus v-on:click="handleNext">Next</button>
 		</div>
 	</div>
@@ -18,6 +19,7 @@
 
 <script>
 import CubeImage from "./components/CubeImage";
+import Timer from "./components/Timer";
 import { $3X3, fetchAlgSet, OLL, PLL } from "./services/algDbService";
 import { getRandomInt } from "./lib/helpers";
 
@@ -36,6 +38,7 @@ function created() {
 
 const components = {
 	CubeImage,
+	Timer,
 };
 
 const computed = {
@@ -70,6 +73,9 @@ const methods = {
 			this.handleNext();
 		});
 	},
+	handleStop(evt) {
+		console.log(evt.target.value);
+	},
 };
 export default { name: "App", data, components, computed, created, methods };
 </script>
@@ -77,11 +83,14 @@ export default { name: "App", data, components, computed, created, methods };
 <style>
 html,
 body {
+	margin: 0;
+	padding: 0;
 	width: 100%;
 	height: 100%;
 }
 
 #app {
+	padding: 10px;
 	font-family: Avenir, Helvetica, Arial, sans-serif;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
