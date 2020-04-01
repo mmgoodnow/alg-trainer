@@ -4,21 +4,20 @@
 		<div v-else>
 			<label>
 				Set:
-				<select v-on:change="onNewAlgSet" :value="algSet">
+				<select v-on:change="handleNewAlgSet" :value="algSet">
 					<option :key="option" v-for="option in algSetOptions" :value="option">
 						{{ option.toUpperCase() }}
 					</option>
 				</select>
 			</label>
-			<CubeImage :cube="cube" :next="next" />
-			<button autofocus v-on:click="onNext">Next</button>
+			<CubeImage :cur-alg="curAlg" :next-alg="nextAlg" />
+			<button autofocus v-on:click="handleNext">Next</button>
 		</div>
 	</div>
 </template>
 
 <script>
 import CubeImage from "./components/CubeImage";
-import * as Cube from "cubejs";
 import { $3X3, fetchAlgSet, OLL, PLL } from "./services/algDbService";
 import { getRandomInt } from "./lib/helpers";
 
@@ -32,12 +31,7 @@ const data = () => ({
 });
 
 function created() {
-	this.loaded = false;
-	fetchAlgSet($3X3, PLL).then((json) => {
-		this.loaded = true;
-		this.algs = json;
-		this.onNext();
-	});
+	this.handleNewAlgSet({ target: { value: PLL } });
 }
 
 const components = {
@@ -45,27 +39,27 @@ const components = {
 };
 
 const computed = {
-	cube() {
+	curAlg() {
 		if (!this.loaded) return null;
-		if (this.currentAlgIndex === null) return new Cube();
-		return new Cube().move(
-			Cube.inverse(this.algs[this.currentAlgIndex].pigCase)
-		);
+		if (this.currentAlgIndex === null) return null;
+		return this.algs[this.currentAlgIndex].pigCase;
 	},
-	next() {
+	nextAlg() {
 		if (!this.loaded) return null;
-		if (this.nextAlgIndex === null) return new Cube();
-		return new Cube().move(Cube.inverse(this.algs[this.nextAlgIndex].pigCase));
+		if (this.nextAlgIndex === null) return null;
+		return this.algs[this.nextAlgIndex].pigCase;
 	},
 };
 
 const methods = {
-	onNext() {
+	handleNext() {
 		console.log("onNext called");
 		this.currentAlgIndex = this.nextAlgIndex;
-		this.nextAlgIndex = getRandomInt(this.algs.length);
+		while (this.currentAlgIndex === this.nextAlgIndex) {
+			this.nextAlgIndex = getRandomInt(this.algs.length);
+		}
 	},
-	onNewAlgSet({ target: { value: newAlgSet } }) {
+	handleNewAlgSet({ target: { value: newAlgSet } }) {
 		this.loaded = false;
 		fetchAlgSet($3X3, newAlgSet).then((json) => {
 			this.algSet = newAlgSet;
@@ -73,7 +67,7 @@ const methods = {
 			this.algs = json;
 			this.currentAlgIndex = null;
 			this.nextAlgIndex = null;
-			this.onNext();
+			this.handleNext();
 		});
 	},
 };

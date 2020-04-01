@@ -3,50 +3,42 @@
 		<img
 			class="cube-img"
 			v-on:load="onLoad('current')"
-			v-bind:src="curSrc"
-			v-bind:alt="curAlt"
+			:src="curSrc"
+			alt
+			:key="curAlg"
 		/>
 		<img
 			class="preload"
 			v-on:load="onLoad('next')"
-			v-bind:src="nextSrc"
-			v-bind:alt="nextAlt"
+			:src="nextSrc"
+			alt
+			:key="nextAlg"
 		/>
 	</div>
 </template>
 
 <script>
-import * as Cube from "cubejs";
-
 const BASE = "http://cube.crider.co.uk/visualcube.php";
 
-function url(cube) {
-	const faceletString = cube.asString();
+function url(alg) {
+	if (!alg) alg = "";
 	const queryParams = {
 		fmt: "svg",
 		view: "plan",
-		fd: faceletString.toLowerCase(),
+		case: alg,
 	};
-	const entries = Object.entries(queryParams).map((qp) => qp.join("="));
+	const entries = Object.entries(queryParams).map(
+		([k, v]) => `${k}=${encodeURIComponent(v)}`
+	);
 	return `${BASE}?${entries.join("&")}`;
-}
-
-function alt(cube) {
-	return cube.asString();
 }
 
 const computed = {
 	curSrc() {
-		return url(this.cube);
+		return url(this.curAlg);
 	},
 	nextSrc() {
-		return url(this.next);
-	},
-	curAlt() {
-		return alt(this.cube);
-	},
-	nextAlt() {
-		return alt(this.next);
+		return url(this.nextAlg);
 	},
 };
 
@@ -57,8 +49,8 @@ const methods = {
 };
 
 const props = {
-	cube: Cube,
-	next: Cube,
+	curAlg: String,
+	nextAlg: String,
 };
 
 export default { name: "CubeImage", computed, methods, props };
