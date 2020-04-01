@@ -1,9 +1,17 @@
 <template>
 	<div id="app">
-		<p v-if="loading">Loading...</p>
+		<h1 v-if="!loaded">Loading...</h1>
 		<div v-else>
+			<label>
+				Set:
+				<select v-on:change="onNewAlgSet" :value="algSet">
+					<option :key="option" v-for="option in algSetOptions" :value="option">
+						{{ option.toUpperCase() }}
+					</option>
+				</select>
+			</label>
 			<CubeImage :cube="cube" :next="next" />
-			<button v-on:click="onNext">Next</button>
+			<button autofocus v-on:click="onNext">Next</button>
 		</div>
 	</div>
 </template>
@@ -11,23 +19,24 @@
 <script>
 import CubeImage from "./components/CubeImage";
 import * as Cube from "cubejs";
-import { $3X3, fetchAlgSet, PLL } from "./services/algDbService";
+import { $3X3, fetchAlgSet, OLL, PLL } from "./services/algDbService";
+import { getRandomInt } from "./lib/helpers";
 
-function data() {
-	const cube = new Cube();
-	const next = new Cube().randomize();
-	const loading = true;
-	const algs = null;
-
-	return { cube, next, algs, loading };
-}
+const data = () => ({
+	algs: null,
+	loaded: false,
+	currentAlgIndex: null,
+	nextAlgIndex: null,
+	algSet: PLL,
+	algSetOptions: [OLL, PLL],
+});
 
 function created() {
-	this.loading = true;
+	this.loaded = false;
 	fetchAlgSet($3X3, PLL).then((json) => {
-		this.loading = false;
+		this.loaded = true;
 		this.algs = json;
-		console.log(this.algs[0]);
+		this.onNext();
 	});
 }
 
@@ -35,12 +44,37 @@ const components = {
 	CubeImage,
 };
 
-const computed = {};
+const computed = {
+	cube() {
+		if (!this.loaded) return null;
+		if (this.currentAlgIndex === null) return new Cube();
+		return new Cube().move(
+			Cube.inverse(this.algs[this.currentAlgIndex].pigCase)
+		);
+	},
+	next() {
+		if (!this.loaded) return null;
+		if (this.nextAlgIndex === null) return new Cube();
+		return new Cube().move(Cube.inverse(this.algs[this.nextAlgIndex].pigCase));
+	},
+};
 
 const methods = {
 	onNext() {
-		this.cube = this.next;
-		this.next = this.cube.clone().randomize();
+		console.log("onNext called");
+		this.currentAlgIndex = this.nextAlgIndex;
+		this.nextAlgIndex = getRandomInt(this.algs.length);
+	},
+	onNewAlgSet({ target: { value: newAlgSet } }) {
+		this.loaded = false;
+		fetchAlgSet($3X3, newAlgSet).then((json) => {
+			this.algSet = newAlgSet;
+			this.loaded = true;
+			this.algs = json;
+			this.currentAlgIndex = null;
+			this.nextAlgIndex = null;
+			this.onNext();
+		});
 	},
 };
 export default { name: "App", data, components, computed, created, methods };
