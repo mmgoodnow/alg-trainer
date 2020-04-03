@@ -10,7 +10,7 @@
 					</option>
 				</select>
 			</label>
-			<CubeImage :cur-alg="curAlg" :next-alg="nextAlg" />
+			<CubeImage :alg="curAlg" />
 			<Timer :hint="curAlg" :hintDelayMs="2000" @stop="handleStop"></Timer>
 			<button autofocus v-on:click="handleNext">Next</button>
 		</div>
@@ -26,8 +26,7 @@ import { getRandomInt } from "./lib/helpers";
 const data = () => ({
 	algs: null,
 	loaded: false,
-	currentAlgIndex: null,
-	nextAlgIndex: null,
+	algIndex: null,
 	algSet: PLL,
 	algSetOptions: [OLL, PLL],
 });
@@ -44,23 +43,15 @@ const components = {
 const computed = {
 	curAlg() {
 		if (!this.loaded) return null;
-		if (this.currentAlgIndex === null) return null;
-		return this.algs[this.currentAlgIndex].pigCase;
-	},
-	nextAlg() {
-		if (!this.loaded) return null;
-		if (this.nextAlgIndex === null) return null;
-		return this.algs[this.nextAlgIndex].pigCase;
+		if (this.algIndex === null) return null;
+		return this.algs[this.algIndex].pigCase;
 	},
 };
 
 const methods = {
 	handleNext() {
 		console.log("onNext called");
-		this.currentAlgIndex = this.nextAlgIndex;
-		while (this.currentAlgIndex === this.nextAlgIndex) {
-			this.nextAlgIndex = getRandomInt(this.algs.length);
-		}
+		this.algIndex = getRandomInt(this.algs.length);
 	},
 	handleNewAlgSet({ target: { value: newAlgSet } }) {
 		this.loaded = false;
@@ -68,9 +59,7 @@ const methods = {
 			this.algSet = newAlgSet;
 			this.loaded = true;
 			this.algs = json;
-			this.currentAlgIndex = null;
-			this.nextAlgIndex = null;
-			this.handleNext();
+			this.algIndex = null;
 		});
 	},
 	handleStop(evt) {

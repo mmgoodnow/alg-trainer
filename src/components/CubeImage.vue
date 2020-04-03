@@ -1,67 +1,46 @@
 <template>
-	<div>
-		<img
-			class="cube-img"
-			v-on:load="onLoad('current')"
-			:src="curSrc"
-			alt
-			:key="curAlg"
-		/>
-		<img
-			class="preload"
-			v-on:load="onLoad('next')"
-			:src="nextSrc"
-			alt
-			:key="nextAlg"
-		/>
-	</div>
+	<div id="cube-img"></div>
 </template>
 
 <script>
-const BASE = "http://cube.crider.co.uk/visualcube.php";
+import { cubeSVG } from "sr-visualizer";
 
-function url(alg) {
-	if (!alg) alg = "";
-	const queryParams = {
-		fmt: "svg",
-		view: "plan",
-		case: alg,
-	};
-	const entries = Object.entries(queryParams).map(
-		([k, v]) => `${k}=${encodeURIComponent(v)}`
-	);
-	return `${BASE}?${entries.join("&")}`;
+function mounted() {
+	console.log("mounted fired");
+	this.rerender();
 }
 
-const computed = {
-	curSrc() {
-		return url(this.curAlg);
-	},
-	nextSrc() {
-		return url(this.nextAlg);
+const watch = {
+	alg() {
+		console.log("watch fired");
+		this.rerender();
 	},
 };
 
 const methods = {
-	onLoad(t) {
-		console.log("loaded", t);
+	rerender() {
+		const container = document.getElementById("cube-img");
+		while (container.firstChild) {
+			container.removeChild(container.lastChild);
+		}
+		cubeSVG(document.getElementById("cube-img"), {
+			view: "plan",
+			case: this.alg,
+		});
 	},
 };
 
 const props = {
-	curAlg: String,
-	nextAlg: String,
+	alg: String,
 };
 
-export default { name: "CubeImage", computed, methods, props };
+export default { name: "CubeImage", mounted, watch, methods, props };
 </script>
 
-<style scoped>
-.cube-img {
+<style>
+svg {
 	width: 500px;
 	max-width: 100%;
-}
-.preload {
-	display: none;
+	height: auto;
 }
 </style>
