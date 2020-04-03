@@ -7436,6 +7436,13 @@ sprintf-js@~1.0.2:
   resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.0.3.tgz#04e6926f662895354f3dd015203633b857297e2c"
   integrity sha1-BOaSb2YolTVPPdAVIDYzuFcpfiw=
 
+sr-visualizer@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/sr-visualizer/-/sr-visualizer-1.0.8.tgz#2e1700356a51360f53dd89d34c88785b04e19005"
+  integrity sha512-LPj7DVVkenYNsHWH7U+Y+qQVeA14y1Klo+dFamrIIAVTTD7mdooxhthFkGiYsHd0NUoqKDEs6vrtAA024/B3lg==
+  dependencies:
+    svg.js "^2.7.1"
+
 sshpk@^1.7.0:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/sshpk/-/sshpk-1.16.1.tgz#fb661c0bef29b39db40769ee39fa70093d6f6877"
@@ -7715,6 +7722,11 @@ svg-tags@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/svg-tags/-/svg-tags-1.0.0.tgz#58f71cee3bd519b59d4b2a843b6c7de64ac04764"
   integrity sha1-WPcc7jvVGbWdSyqEO2x95krAR2Q=
+
+svg.js@^2.7.1:
+  version "2.7.1"
+  resolved "https://registry.yarnpkg.com/svg.js/-/svg.js-2.7.1.tgz#eb977ed4737001eab859949b4a398ee1bb79948d"
+  integrity sha512-ycbxpizEQktk3FYvn/8BH+6/EuWXg7ZpQREJvgacqn46gIddG24tNNe4Son6omdXCnSOaApnpZw6MPCBA1dODA==
 
 svgo@^1.0.0:
   version "1.3.2"

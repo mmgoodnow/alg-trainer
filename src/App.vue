@@ -20,7 +20,7 @@
 <script>
 import CubeImage from "./components/CubeImage";
 import Timer from "./components/Timer";
-import { $3X3, fetchAlgSet, OLL, PLL } from "./services/algDbService";
+import { $3X3, getAlgSet, OLL, PLL } from "./services/algSetService";
 import { getRandomInt } from "./lib/helpers";
 
 const data = () => ({
@@ -64,7 +64,7 @@ const methods = {
 	},
 	handleNewAlgSet({ target: { value: newAlgSet } }) {
 		this.loaded = false;
-		fetchAlgSet($3X3, newAlgSet).then((json) => {
+		getAlgSet($3X3, newAlgSet).then((json) => {
 			this.algSet = newAlgSet;
 			this.loaded = true;
 			this.algs = json;

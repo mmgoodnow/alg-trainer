@@ -9,6 +9,7 @@
 	},
 	"dependencies": {
 		"core-js": "^3.6.4",
+		"sr-visualizer": "^1.0.8",
 		"vue": "^2.6.11"
 	},
 	"devDependencies": {
