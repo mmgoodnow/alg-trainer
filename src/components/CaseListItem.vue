@@ -9,9 +9,18 @@
 
 <script>
 import CubeImage from "./CubeImage";
+import { mapState } from "vuex";
 
 const props = {
-	alg: Object,
+	index: Number,
+};
+
+const computed = {
+	...mapState({
+		alg(state) {
+			return state.cases[this.index];
+		},
+	}),
 };
 
 const methods = {
@@ -28,9 +37,10 @@ const methods = {
 };
 export default {
 	name: "CaseListItem",
-	components: { CubeImage },
+	computed,
 	props,
 	methods,
+	components: { CubeImage },
 };
 </script>
 

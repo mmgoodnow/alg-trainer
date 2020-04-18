@@ -1,27 +1,21 @@
 <template>
 	<div class="list">
-		<div v-for="alg in algs" :key="alg.id">
-			<CaseListItem :alg="alg" @toggle-disabled="handleUpdateCase" />
-		</div>
+		<CaseListItem v-for="(alg, index) in cases" :key="alg.id" :index="index" />
 	</div>
 </template>
 
 <script>
 import CaseListItem from "./CaseListItem";
-const props = {
-	algs: Array,
-};
-
-const methods = {
-	handleUpdateCase(evt) {
-		this.$emit("update-case", evt);
-	},
+import { mapState } from "vuex";
+const computed = {
+	...mapState({
+		cases: (state) => state.cases,
+	}),
 };
 export default {
 	name: "CaseList",
+	computed,
 	components: { CaseListItem },
-	props,
-	methods,
 };
 </script>
 
