@@ -1,29 +1,27 @@
 <template>
-	<div id="cube-img"></div>
+	<div class="cube-img" ref="container" />
 </template>
 
 <script>
 import { cubeSVG } from "sr-visualizer";
 
 function mounted() {
-	console.log("mounted fired");
 	this.rerender();
 }
 
 const watch = {
 	alg() {
-		console.log("watch fired");
 		this.rerender();
 	},
 };
 
 const methods = {
 	rerender() {
-		const container = document.getElementById("cube-img");
+		const container = this.$refs.container;
 		while (container.firstChild) {
 			container.removeChild(container.lastChild);
 		}
-		cubeSVG(document.getElementById("cube-img"), {
+		cubeSVG(this.$refs.container, {
 			view: "plan",
 			case: this.alg,
 		});
@@ -38,7 +36,7 @@ export default { name: "CubeImage", mounted, watch, methods, props };
 </script>
 
 <style>
-svg {
+.cube-img > svg {
 	width: 500px;
 	max-width: 100%;
 	height: auto;
