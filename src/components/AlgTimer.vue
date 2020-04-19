@@ -15,7 +15,7 @@ import { mapState } from "vuex";
 import { getRandomInt } from "../lib/helpers";
 
 const data = () => ({
-	currentIndex: null,
+	index: null,
 });
 
 const computed = {
@@ -25,19 +25,23 @@ const computed = {
 	}),
 	pigCase() {
 		if (!this.loaded) return null;
-		if (this.currentIndex === null) return null;
-		return this.cases[this.currentIndex].pigCase;
+		if (this.index === null) return null;
+		return this.cases[this.index].pigCase;
 	},
 };
 
 const methods = {
 	handleStop(evt) {
 		console.log("stop", evt.target.value);
+		this.$store.dispatch("ADD_TIME", {
+			index: this.index,
+			time: evt.target.value,
+		});
 	},
 	handleNext() {
 		const filtered = this.cases.filter((algCase) => !algCase.disabled);
 		const filteredIndex = getRandomInt(filtered.length);
-		this.currentIndex = this.cases.indexOf(filtered[filteredIndex]);
+		this.index = this.cases.indexOf(filtered[filteredIndex]);
 	},
 };
 

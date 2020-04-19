@@ -1,38 +1,37 @@
 <template>
-	<div class="item" :disabled="alg.disabled" @click="toggleDisabled">
-		<div class="image-container">
+	<div class="item grid" :disabled="alg.disabled" @click="toggleDisabled">
+		<div class="image-container image">
 			<CubeImage :alg="alg.pigCase" />
 		</div>
-		<h2 class="text-white">{{ alg.name }}</h2>
+		<strong class="name">{{ alg.name }}</strong>
+		<strong class="median">{{ median }}</strong>
+		<strong class="best">{{ best }}</strong>
 	</div>
 </template>
 
 <script>
 import CubeImage from "./CubeImage";
-import { mapState } from "vuex";
+import { median, min } from "../lib/helpers";
 
 const props = {
 	index: Number,
 };
 
 const computed = {
-	...mapState({
-		alg(state) {
-			return state.cases[this.index];
-		},
-	}),
+	alg() {
+		return this.$store.state.cases[this.index];
+	},
+	best() {
+		return min(this.alg.times) || null;
+	},
+	median() {
+		return median(this.alg.times) || null;
+	},
 };
 
 const methods = {
 	toggleDisabled() {
-		this.$emit("toggle-disabled", {
-			target: {
-				value: {
-					...this.alg,
-					disabled: !this.alg.disabled,
-				},
-			},
-		});
+		this.$store.dispatch("TOGGLE_DISABLED", { index: this.index });
 	},
 };
 export default {
@@ -45,24 +44,47 @@ export default {
 </script>
 
 <style scoped>
+.grid {
+	display: grid;
+	grid-template-columns: 100px 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-areas:
+		"image name"
+		"image median"
+		"image best";
+	height: 100px;
+	max-height: 100px;
+}
+
+.image {
+	grid-area: image;
+	width: 100px;
+	height: 100px;
+}
+
+.name {
+	grid-area: name;
+}
+
+.median {
+	grid-area: timer;
+}
+
+.best {
+	grid-area: best;
+}
+
 .item {
-	display: flex;
-	flex-direction: row;
-	flex-wrap: nowrap;
-	justify-content: flex-start;
-	align-items: center;
 	cursor: pointer;
 	user-select: none;
 }
 
-.item:hover,
-.item:disabled {
-	text-decoration: line-through;
-	filter: brightness(50%);
+.item:hover {
+	filter: brightness(80%);
 }
 
-.image-container {
-	width: 100px;
-	height: 100px;
+.item[disabled] {
+	text-decoration: line-through;
+	filter: brightness(50%);
 }
 </style>

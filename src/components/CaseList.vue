@@ -6,12 +6,13 @@
 
 <script>
 import CaseListItem from "./CaseListItem";
-import { mapState } from "vuex";
+
 const computed = {
-	...mapState({
-		cases: (state) => state.cases,
-	}),
+	cases() {
+		return this.$store.state.cases;
+	},
 };
+
 export default {
 	name: "CaseList",
 	computed,
