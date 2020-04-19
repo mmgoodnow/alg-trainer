@@ -3,9 +3,13 @@
 		<div class="image-container image">
 			<CubeImage :alg="alg.pigCase" />
 		</div>
-		<strong class="name">{{ alg.name }}</strong>
-		<strong class="median">{{ median }}</strong>
-		<strong class="best">{{ best }}</strong>
+		<div class="name">
+			<strong>{{ alg.name }}</strong>
+		</div>
+		<div class="stats">
+			<div>Med {{ median }}</div>
+			<div>Best {{ best }}</div>
+		</div>
 	</div>
 </template>
 
@@ -47,11 +51,10 @@ export default {
 .grid {
 	display: grid;
 	grid-template-columns: 100px 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
 	grid-template-areas:
 		"image name"
-		"image median"
-		"image best";
+		"image stats";
 	height: 100px;
 	max-height: 100px;
 }
@@ -64,14 +67,8 @@ export default {
 
 .name {
 	grid-area: name;
-}
-
-.median {
-	grid-area: timer;
-}
-
-.best {
-	grid-area: best;
+	align-self: end;
+	font-size: x-large;
 }
 
 .item {

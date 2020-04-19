@@ -1,6 +1,5 @@
 import Vue from "vue";
-
-const DEFAULT_CASE_PROPERTIES = { times: [], disabled: false };
+const getDefaultCaseProperties = () => ({ times: [], disabled: false });
 
 export function SET_LOADED(store, loaded) {
 	store.loaded = loaded;
@@ -12,7 +11,7 @@ export function SET_CASE(store, { index, value }) {
 
 export function SET_ALG_SET(store, { algSet, cases }) {
 	store.algSet = algSet;
-	store.cases = cases.map((c) => ({ ...DEFAULT_CASE_PROPERTIES, ...c }));
+	store.cases = cases.map((c) => ({ ...getDefaultCaseProperties(), ...c }));
 }
 
 export function SET_DISABLED(store, { index, disabled }) {

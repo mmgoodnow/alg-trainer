@@ -46,7 +46,7 @@ const methods = {
 		this.showHint = false;
 		clearTimeout(this.timeoutId);
 		clearInterval(this.intervalId);
-		this.$emit("stop", { target: { value: this.elapsedMs } });
+		this.$emit("stop", { target: { value: this.elapsedMs / 1000 } });
 	},
 };
 

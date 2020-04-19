@@ -4,6 +4,7 @@ import * as mutations from "./mutations";
 import * as actions from "./actions";
 import { persistToLocalStorage } from "./plugins";
 import { PLL } from "../api/algSetService";
+
 Vue.use(Vuex);
 
 const state = {

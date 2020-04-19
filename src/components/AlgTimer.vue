@@ -3,8 +3,13 @@
 		<h1 v-if="!loaded">Loading...</h1>
 		<div v-else>
 			<CubeImage :alg="pigCase" />
-			<Timer :hint="pigCase" :hintDelayMs="2000" @stop="handleStop" />
-			<button autofocus v-on:click="handleNext">Next</button>
+			<Timer
+				v-if="index !== null"
+				:hint="pigCase"
+				:hintDelayMs="2000"
+				@stop="handleStop"
+			/>
+			<button autofocus @click="handleNext">Next</button>
 		</div>
 	</div>
 </template>
