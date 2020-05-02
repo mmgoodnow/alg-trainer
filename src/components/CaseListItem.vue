@@ -26,10 +26,14 @@ const computed = {
 		return this.$store.state.cases[this.index];
 	},
 	best() {
-		return min(this.alg.times) || null;
+		const minimum = min(this.alg.times);
+		if (!minimum) return null;
+		return minimum.toFixed(3);
 	},
 	median() {
-		return median(this.alg.times) || null;
+		const med = median(this.alg.times);
+		if (!med) return null;
+		return med.toFixed(3);
 	},
 };
 
