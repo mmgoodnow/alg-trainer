@@ -6,10 +6,14 @@
 			<Timer
 				v-if="index !== null"
 				:hint="pigCase"
-				:hintDelayMs="2000"
+				:hint-delay-ms="2000"
 				@stop="handleStop"
+				:disabled="isTimerDisabled"
 			/>
-			<button autofocus @click="handleNext">Next</button>
+			<button v-if="isTimerDisabled" @click="handleNext" autofocus>Next</button>
+			<button v-if="isTimerDisabled && index !== null" @click="deleteLast">
+				Delete
+			</button>
 		</div>
 	</div>
 </template>
@@ -21,6 +25,7 @@ import { getRandomInt } from "../lib/helpers";
 
 const data = () => ({
 	index: null,
+	isTimerDisabled: true,
 });
 
 const computed = {
@@ -37,16 +42,21 @@ const computed = {
 
 const methods = {
 	handleStop(evt) {
-		console.log("stop", evt.target.value);
+		this.isTimerDisabled = true;
 		this.$store.dispatch("ADD_TIME", {
 			index: this.index,
 			time: evt.target.value,
 		});
 	},
 	handleNext() {
+		this.isTimerDisabled = false;
 		const filtered = this.cases.filter((algCase) => !algCase.disabled);
 		const filteredIndex = getRandomInt(filtered.length);
 		this.index = this.cases.indexOf(filtered[filteredIndex]);
+	},
+	deleteLast() {
+		this.$store.dispatch("DELETE_LAST_TIME", { index: this.index });
+		this.index = null;
 	},
 };
 

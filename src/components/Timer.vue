@@ -2,8 +2,10 @@
 	<div>
 		<h1>{{ seconds }}</h1>
 		<h1 v-if="showHint">{{ hint }}</h1>
-		<button v-if="isRunning" @click="stop">Stop</button>
-		<button v-else @click="start">Start</button>
+		<div v-if="!disabled">
+			<button v-if="isRunning" @click="stop" autofocus>Stop</button>
+			<button v-else @click="start" autofocus>Start</button>
+		</div>
 	</div>
 </template>
 
@@ -20,6 +22,7 @@ const data = () => ({
 const props = {
 	hint: String,
 	hintDelayMs: Number,
+	disabled: Boolean,
 };
 
 const computed = {
