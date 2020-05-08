@@ -1,6 +1,5 @@
 <template>
-	<!-- mousedown handler is to prevent the blur event on focused buttons-->
-	<div class="grid" @mousedown.stop.prevent>
+	<div class="grid">
 		<div class="selector">
 			<label>
 				<strong>Set:</strong>

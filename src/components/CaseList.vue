@@ -1,5 +1,5 @@
 <template>
-	<div class="list">
+	<div class="list" @mousedown.stop.prevent>
 		<CaseListItem v-for="(alg, index) in cases" :key="alg.id" :index="index" />
 	</div>
 </template>

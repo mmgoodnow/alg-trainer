@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div @mousedown.stop.prevent>
 		<h1 v-if="!loaded">Loading...</h1>
 		<div v-else>
 			<CubeImage :alg="pigCase" />
