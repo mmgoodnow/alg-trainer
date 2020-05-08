@@ -40,5 +40,7 @@ export default { name: "CubeImage", mounted, watch, methods, props };
 	width: 500px;
 	max-width: 100%;
 	height: auto;
+	position: relative;
+	z-index: 1;
 }
 </style>

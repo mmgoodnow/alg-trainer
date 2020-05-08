@@ -6,10 +6,9 @@
 			<Timer
 				v-if="index !== null"
 				:hint="pigCase"
-				:hint-delay-ms="2000"
+				:hint-delay-ms="5000"
 				@stop="handleStop"
 				:disabled="isTimerDisabled"
-				:autostart-delay-ms="1000"
 			/>
 			<template v-if="isTimerDisabled">
 				<button @click="handleNext" autofocus>Next</button>
