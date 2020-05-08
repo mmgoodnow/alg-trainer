@@ -9,11 +9,12 @@
 				:hint-delay-ms="2000"
 				@stop="handleStop"
 				:disabled="isTimerDisabled"
+				:autostart-delay-ms="1000"
 			/>
-			<button v-if="isTimerDisabled" @click="handleNext" autofocus>Next</button>
-			<button v-if="isTimerDisabled && index !== null" @click="deleteLast">
-				Delete
-			</button>
+			<template v-if="isTimerDisabled">
+				<button @click="handleNext" autofocus>Next</button>
+				<button v-if="index !== null" @click="deleteLast">Delete</button>
+			</template>
 		</div>
 	</div>
 </template>

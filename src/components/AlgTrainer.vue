@@ -1,5 +1,6 @@
 <template>
-	<div class="grid">
+	<!-- mousedown handler is to prevent the blur event on focused buttons-->
+	<div class="grid" @mousedown.stop.prevent>
 		<div class="selector">
 			<label>
 				<strong>Set:</strong>
@@ -20,7 +21,6 @@ import CaseList from "./CaseList";
 import CubeImage from "./CubeImage";
 import Timer from "./Timer";
 import { OLL, PLL } from "../api/algSetService";
-import { getRandomInt } from "../lib/helpers";
 import { mapActions, mapState } from "vuex";
 import AlgTimer from "./AlgTimer";
 
@@ -48,13 +48,6 @@ const computed = {
 };
 
 const methods = {
-	handleNext() {
-		console.log("onNext called");
-		this.algIndex = getRandomInt(this.algs.length);
-	},
-	handleStop(evt) {
-		console.log(evt.target.value);
-	},
 	handleNewAlgSet(evt) {
 		this.fetchAlgSet(evt.target.value);
 	},
